@@ -1,7 +1,7 @@
 from dataset import generate_dataset, write_labels, load_dataset, generate_binary_string
 from sub_quadratic import sub_quadratic
 from table_lookup import table_lookup
-from four_russian_trick import four_russian_trick, max_one_dp
+from four_russian_trick import four_russian_trick, max_min_one_dp
 import time
 
 if __name__ == '__main__':
@@ -50,7 +50,7 @@ if __name__ == '__main__':
         maxOne_time += (time.time() - t)
 
         t = time.time()
-        res_2 = max_one_dp(random_binary, 4)
+        res_2 = max_min_one_dp(random_binary, 4)[0]
         maxOne_normal_time += (time.time() - t)
 
         if res_1 != res_2:

@@ -79,12 +79,11 @@ def four_russian_trick(text, l):
 
 
 # The dynamic programming approach, implemented just to compare
-def max_one_dp(text, l):
+def max_min_one_dp(text, l):
     n = len(text)
-    s = int(math.log2(n) / 6)
     w = text[:l]
     w_ones = ones(w)
-    result = w_ones
+    max_ones, min_ones = w_ones, w_ones
     for i in range(1, n - l + 1):
         temp = 0
         w = text[i:i + l]
@@ -93,6 +92,7 @@ def max_one_dp(text, l):
         elif text[i - 1] == '1' and text[i + l - 1] == '0':
             temp = -1
         w_ones = w_ones + temp
-        result = max(result, w_ones)
+        max_ones = max(max_ones, w_ones)
+        min_ones = min(min_ones, w_ones)
 
-    return result
+    return max_ones, min_ones
