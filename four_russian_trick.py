@@ -56,7 +56,7 @@ def calculate_k_min(F, G):
 def four_russian_trick(text, l):
     # Initialize values
     n = len(text)
-    s = int(math.log2(n))
+    s = int(math.log2(n)/6)
     A_max, A_min = {}, {}
     B = 0
     max_one_result, min_one_result = 0, n

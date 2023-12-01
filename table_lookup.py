@@ -10,24 +10,64 @@ def compare_left_right_characters(left, right):
     return 0
 
 
+def max_min_indexes(text, window_size, max_ones, min_ones):
+    max_indexes, min_indexes = [], []
+    for i in range(len(text)-window_size):
+        if ones(text[i:i+window_size]) == max_ones:
+            max_indexes.append(i)
+        if ones(text[i:i+window_size]) == min_ones:
+            min_indexes.append(i)
+    return max_indexes, min_indexes
+
+
 def table_lookup(text, a):
     n = len(text)
     s = int(math.log2(n))
-    temp1, temp2 = max_min_one_dp(text, a)
-    C = {'initial_position_max_ones': temp1, 'initial_position_min_ones': temp2}
+
+    initial_max, initial_min = max_min_one_dp(text, a)
+    initial_max_indexes, initial_min_indexes = max_min_indexes(text, a, initial_max, initial_min)
+    C = {a: (initial_max, initial_min, initial_max_indexes, initial_min_indexes)}
     # Fill the table
-    for i in range(n):
-        for window_size in range(a, a + s + 1):
-            if window_size > i:
-                window_ones = ones(text[:i + 1])
-                # signature max number, signature min number, current ones number for each of the l values
-                C[window_size] = (max(0, window_ones - C['initial_position_max_ones']),
-                                  max(0, window_ones - C['initial_position_min_ones']),
-                                  window_ones)
-            else:
-                signature_max, signature_min, windows_ones = C[window_size]
-                window_ones = windows_ones + compare_left_right_characters(text[i - window_size], text[i])
-                C[window_size] = (max(signature_max, window_ones - C['initial_position_max_ones']),
-                                  min(signature_min, window_ones - C['initial_position_min_ones']),
-                                  window_ones)
+    for window_size in range(a+1, a + s + 1):
+        initial_max, initial_min, initial_max_indexes, initial_min_indexes = C[window_size-1]
+        current_max, current_min, current_max_indexes, current_min_indexes = initial_max, initial_min+1, [], []
+        flag = False
+        for i in initial_max_indexes:
+            try:
+                if text[i+window_size-1] == '1':
+                    current_max = initial_max + 1
+                    current_max_indexes.append(i)
+            except:
+                flag = True
+        if current_max == initial_max:
+            if flag:
+                temp = initial_max_indexes[-1]
+                if temp - 1 not in initial_max_indexes:
+                    initial_max_indexes[-1] = temp - 1
+                else:
+                    initial_max_indexes = initial_max_indexes[:-1]
+            current_max_indexes = initial_max_indexes[:-1]
+
+        flag = False
+        for i in initial_min_indexes:
+            try:
+                if text[i+window_size-1] == '0':
+                    current_min = initial_min
+                    current_min_indexes.append(i)
+            except:
+                flag = True
+
+        if current_min == initial_min + 1:
+            if flag:
+                temp = initial_min_indexes[-1]
+                if temp - 1 not in initial_min_indexes:
+                    initial_min_indexes[-1] = temp - 1
+                else:
+                    initial_min_indexes = initial_min_indexes[:-1]
+                current_min_indexes = initial_min_indexes
+        C[window_size] = current_max, current_min, current_max_indexes, current_min_indexes
+
     return C
+
+
+print(table_lookup('0110101101010010', 3))
