@@ -41,15 +41,13 @@ def table_lookup_comparison(sample_number, sample_length):
             t = time.time()
             res_2 = max_min_one_dp(random_binary, l)
             dp_time += (time.time() - t)
-            temp1, temp2, temp3 = res_1[l]
-            temp1 += res_1['initial_position_max_ones']
-            temp2 += res_1['initial_position_min_ones']
+            temp1, temp2, temp3, temp4 = res_1[l]
             if (temp1, temp2) != res_2:
-                print("The results are not match! something is wrong! for l=", l, "results:", res_1[l], res_2)
-                print("The sample, ", random_binary)
+                print("The results are not match! something is wrong! for l=", l, "results:", temp1, temp2, res_2)
+                # print("The sample, ", random_binary)
                 break
 
-        if i % 1 == 0:
+        if i % 10 == 0:
             print('time for table_lookup', table_lookup_time)
             print('time for simple dynamic programming', dp_time)
             print('-------------')
@@ -95,4 +93,4 @@ if __name__ == '__main__':
     # print("sub quadratic algorithm time:", four_russian_trick_time)
 
     # four_russian_trick_comparison(100, 100000)
-    table_lookup_comparison(100, 1000000)
+    table_lookup_comparison(100, 100000)
