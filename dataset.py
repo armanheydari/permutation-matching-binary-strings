@@ -17,9 +17,9 @@ def generate_dataset(number_of_samples, maximum_length=100):
         writer.writerow(['text', 'pattern'])
         for i in range(number_of_samples):
             # Determine the length of the binary text
-            text_length = random.randint(1, maximum_length)
+            text_length = random.randint(2, maximum_length)
             # Determine the length of the binary pattern, pattern should be shorter than the text
-            pattern_length = random.randint(1, text_length)
+            pattern_length = random.randint(2, text_length)
             writer.writerow([generate_binary_string(text_length), generate_binary_string(pattern_length)])
 
 

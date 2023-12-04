@@ -53,18 +53,18 @@ def calculate_k_min(F, G):
 
 
 # Function to implement the Four Russians trick
-def four_russian_trick(text, l):
+def max_min_one_frt(text, l):
     # Initialize values
     n = len(text)
-    s = int(math.log2(n)/6)
+    s = int(math.log2(n))
     A_max, A_min = {}, {}
     B = 0
     max_one_result, min_one_result = 0, n
     # If s is 0, return the count of '1's in text
     if s == 0:
-        return ones(text), ones(text)
+        s = 1
     # Iterate over the text in chunks of size s
-    for i in range(0, n, s):
+    for i in range(0, n-l+1, s):
         w = text[i:i + l]
         F = w[:s]
         G = text[i + l: i + l + s]
@@ -78,21 +78,12 @@ def four_russian_trick(text, l):
     return max_one_result, min_one_result
 
 
-# The dynamic programming approach, implemented just to compare
-def max_min_one_dp(text, l):
-    n = len(text)
-    w = text[:l]
-    w_ones = ones(w)
-    max_ones, min_ones = w_ones, w_ones
-    for i in range(1, n - l + 1):
-        temp = 0
-        w = text[i:i + l]
-        if text[i - 1] == '0' and text[i + l - 1] == '1':
-            temp = 1
-        elif text[i - 1] == '1' and text[i + l - 1] == '0':
-            temp = -1
-        w_ones = w_ones + temp
-        max_ones = max(max_ones, w_ones)
-        min_ones = min(min_ones, w_ones)
-
-    return max_ones, min_ones
+def four_russian_trick(text, pattern):
+    m = len(pattern)
+    max_ones, min_ones = max_min_one_frt(text, m)
+    pattern_ones = ones(pattern)
+    if max_ones > min_ones + 1 and max_ones >= pattern_ones >= min_ones:
+        return True
+    elif pattern_ones == max_ones or pattern_ones == min_ones:
+        return True
+    return False

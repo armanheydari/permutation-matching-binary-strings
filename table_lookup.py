@@ -1,5 +1,6 @@
 import math
-from four_russian_trick import ones, max_min_one_dp
+from four_russian_trick import ones
+from dynamic_programming import max_min_one_dp
 
 
 def compare_left_right_characters(left, right):
