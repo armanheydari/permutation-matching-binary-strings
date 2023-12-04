@@ -29,6 +29,3 @@ def dynamic_programming(text, pattern):
     elif pattern_ones == max_ones or pattern_ones == min_ones:
         return True
     return False
-
-
-dynamic_programming('0001110010', '01100')

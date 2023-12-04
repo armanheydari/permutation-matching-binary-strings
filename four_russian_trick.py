@@ -56,15 +56,17 @@ def calculate_k_min(F, G):
 def max_min_one_frt(text, l):
     # Initialize values
     n = len(text)
-    s = int(math.log2(n))
+    s = int(math.log2(n)/6)
     A_max, A_min = {}, {}
     B = 0
     max_one_result, min_one_result = 0, n
-    # If s is 0, return the count of '1's in text
     if s == 0:
         s = 1
+    elif s > l:
+        s = l
     # Iterate over the text in chunks of size s
-    for i in range(0, n-l+1, s):
+    print("s in frt", s)
+    for i in range(0, n - l + 1, s):
         w = text[i:i + l]
         F = w[:s]
         G = text[i + l: i + l + s]
